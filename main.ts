@@ -5,11 +5,13 @@ basic.forever(function () {
     // 停下來
     if (bitbot.readLine(BBLineSensor.Left) == 0 && bitbot.readLine(BBLineSensor.Right) == 0) {
         bitbot.stop(BBStopMode.Brake)
-        bitbot.rotate(BBRobotDirection.Right, 30)
+        // 開始計時
         開始時間 = input.runningTime()
-        while (bitbot.readLine(BBLineSensor.Left) == 1 && bitbot.readLine(BBLineSensor.Right) == 1 && input.runningTime() - 開始時間 <= 400 || input.runningTime() - 開始時間 > 400) {
+        // 在黑線上
+        while (!(bitbot.readLine(BBLineSensor.Left) == 1 && bitbot.readLine(BBLineSensor.Right) == 1 && input.runningTime() - 開始時間 <= 400 || input.runningTime() - 開始時間 > 400)) {
             bitbot.rotate(BBRobotDirection.Right, 30)
         }
+        bitbot.stop(BBStopMode.Brake)
         結束時間 = input.runningTime() - 開始時間
     }
     // 右邊
