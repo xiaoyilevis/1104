@@ -1,10 +1,11 @@
 {
-    "name": "1118",
+    "name": "1125",
     "description": "",
     "dependencies": {
         "core": "*",
         "radio": "*",
-        "BitBot": "github:4tronix/bitbot#1.4.6"
+        "BitBot": "github:4tronix/bitbot#1.4.6",
+        "microphone": "*"
     },
     "files": [
         "main.blocks",
