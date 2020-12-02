@@ -16,43 +16,40 @@ input.onButtonPressed(Button.A, function () {
     radio.sendNumber(1)
 })
 function 循線 () {
-    while (狀態 == 1) {
-        // 白線上
-        // 停下來
-        if (bitbot.readLine(BBLineSensor.Left) == 0 && bitbot.readLine(BBLineSensor.Right) == 0) {
-            bitbot.stop(BBStopMode.Brake)
-            // 開始計時
-            開始時間 = input.runningTime()
-            // 在黑線上
-            while (!((bitbot.readLine(BBLineSensor.Left) == 1 || bitbot.readLine(BBLineSensor.Right) == 1) && input.runningTime() - 開始時間 <= 400 || input.runningTime() - 開始時間 > 400)) {
+    // 白線上
+    // 停下來
+    if (bitbot.readLine(BBLineSensor.Left) == 0 && bitbot.readLine(BBLineSensor.Right) == 0) {
+        bitbot.stop(BBStopMode.Brake)
+        // 開始計時
+        開始時間 = input.runningTime()
+        // 在黑線上
+        while (!((bitbot.readLine(BBLineSensor.Left) == 1 || bitbot.readLine(BBLineSensor.Right) == 1) && input.runningTime() - 開始時間 <= 400 || input.runningTime() - 開始時間 > 400)) {
+            bitbot.rotate(BBRobotDirection.Right, 30)
+        }
+        bitbot.stop(BBStopMode.Brake)
+        結束時間 = input.runningTime() - 開始時間
+        if (結束時間 <= 400) {
+            while (!(bitbot.readLine(BBLineSensor.Left) == 1 && bitbot.readLine(BBLineSensor.Right) == 1)) {
                 bitbot.rotate(BBRobotDirection.Right, 30)
             }
-            bitbot.stop(BBStopMode.Brake)
-            結束時間 = input.runningTime() - 開始時間
-            if (結束時間 <= 400) {
-                while (!(bitbot.readLine(BBLineSensor.Left) == 1 && bitbot.readLine(BBLineSensor.Right) == 1)) {
-                    bitbot.rotate(BBRobotDirection.Right, 30)
-                }
-            } else {
-                while (!(bitbot.readLine(BBLineSensor.Left) == 1 && bitbot.readLine(BBLineSensor.Right) == 1)) {
-                    bitbot.rotate(BBRobotDirection.Left, 30)
-                }
+        } else {
+            while (!(bitbot.readLine(BBLineSensor.Left) == 1 && bitbot.readLine(BBLineSensor.Right) == 1)) {
+                bitbot.rotate(BBRobotDirection.Left, 30)
             }
         }
-        // 右邊
-        if (bitbot.readLine(BBLineSensor.Left) == 1 && bitbot.readLine(BBLineSensor.Right) == 0) {
-            bitbot.rotate(BBRobotDirection.Left, 20)
-        }
-        // 左邊
-        if (bitbot.readLine(BBLineSensor.Left) == 0 && bitbot.readLine(BBLineSensor.Right) == 1) {
-            bitbot.rotate(BBRobotDirection.Right, 20)
-        }
-        // 黑線上
-        if (bitbot.readLine(BBLineSensor.Left) == 1 && bitbot.readLine(BBLineSensor.Right) == 1) {
-            bitbot.go(BBDirection.Forward, 60)
-        }
     }
-    bitbot.stop(BBStopMode.Brake)
+    // 右邊
+    if (bitbot.readLine(BBLineSensor.Left) == 1 && bitbot.readLine(BBLineSensor.Right) == 0) {
+        bitbot.rotate(BBRobotDirection.Left, 20)
+    }
+    // 左邊
+    if (bitbot.readLine(BBLineSensor.Left) == 0 && bitbot.readLine(BBLineSensor.Right) == 1) {
+        bitbot.rotate(BBRobotDirection.Right, 20)
+    }
+    // 黑線上
+    if (bitbot.readLine(BBLineSensor.Left) == 1 && bitbot.readLine(BBLineSensor.Right) == 1) {
+        bitbot.go(BBDirection.Forward, 60)
+    }
 }
 input.onGesture(Gesture.Shake, function () {
 	
@@ -85,5 +82,8 @@ let 頁面 = 1
 basic.showNumber(頁面)
 狀態 = 2
 basic.forever(function () {
-    循線()
+    while (狀態 == 1) {
+        循線()
+    }
+    bitbot.stop(BBStopMode.Brake)
 })
